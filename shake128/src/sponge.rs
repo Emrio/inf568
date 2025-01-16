@@ -1,11 +1,10 @@
 // IMPORTANT NOTE: d and r are expressed in bytes, not bits contrary to the FIPS 202 standard.
 
 use crate::state::State;
-use std::io::Read;
 
 type F = fn(State) -> State;
 
-fn feed(r: usize, state: State, data: &[u8]) -> State {
+fn absorb_fixed(r: usize, state: State, data: &[u8]) -> State {
     assert!(data.len() == r);
 
     let mut new_state = state.copy();
@@ -25,31 +24,18 @@ fn feed(r: usize, state: State, data: &[u8]) -> State {
     new_state
 }
 
-fn read_input_block_padded(r: usize) -> (Vec<u8>, bool) {
-    let mut input_data = vec![0u8; r];
-    let input_size = std::io::stdin()
-        .take(r as u64)
-        .read(&mut input_data)
-        .unwrap();
+// Input is assumed to be a multiple of r bytes (padded if necessary)
+pub fn absorb(r: usize, f: F, state: State, data: &[u8]) -> State {
+    assert!(data.len() % r == 0);
 
-    if input_size < r {
-        input_data[input_size] = 0x1f;
-        input_data[r - 1] += 0x80
-    }
-
-    (input_data, input_size < r)
-}
-
-pub fn absorb_from_stdin(r: usize, f: F) -> State {
-    let mut state = State::new();
-    loop {
-        let (input_data, reached_eof) = read_input_block_padded(r);
-        state = feed(r, state, &input_data[..]);
+    let mut state = state;
+    let mut data_index = 0;
+    while data_index < data.len() {
+        let end = std::cmp::min(data_index + r, data.len());
+        let chunk = &data[data_index..end];
+        state = absorb_fixed(r, state, chunk);
         state = f(state);
-
-        if reached_eof {
-            break;
-        }
+        data_index += r;
     }
     state
 }
