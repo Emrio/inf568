@@ -5,16 +5,23 @@ use std::io::Read;
 
 const R: usize = 168;
 
+fn pad(data: &mut Vec<u8>) {
+    assert!(data.len() < R);
+    let pad_start = data.len();
+    data.resize(R, 0);
+    data[pad_start] = 0x1f;
+    data[R - 1] += 0x80;
+}
+
 fn read_input_block_padded() -> (Vec<u8>, bool) {
-    let mut input_data = vec![0u8; R];
+    let mut input_data = Vec::with_capacity(R);
     let input_size = std::io::stdin()
         .take(R as u64)
-        .read(&mut input_data)
+        .read_to_end(&mut input_data)
         .unwrap();
 
     if input_size < R {
-        input_data[input_size] = 0x1f;
-        input_data[R - 1] += 0x80
+        pad(&mut input_data);
     }
 
     (input_data, input_size < R)
@@ -32,14 +39,6 @@ pub fn from_stdin(d: usize) -> Vec<u8> {
     }
 
     sponge::squeeze(R, keccack::keccak_p, d, state)
-}
-
-fn pad(data: &mut Vec<u8>) {
-    assert!(data.len() < R);
-    let pad_start = data.len();
-    data.resize(R, 0);
-    data[pad_start] = 0x1f;
-    data[R - 1] += 0x80;
 }
 
 #[allow(dead_code)]

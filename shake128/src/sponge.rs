@@ -5,7 +5,7 @@ use crate::state::State;
 type F = fn(State) -> State;
 
 fn absorb_fixed(r: usize, state: State, data: &[u8]) -> State {
-    assert!(data.len() == r);
+    assert_eq!(data.len(), r);
 
     let mut new_state = state.copy();
 
@@ -26,7 +26,7 @@ fn absorb_fixed(r: usize, state: State, data: &[u8]) -> State {
 
 // Input is assumed to be a multiple of r bytes (padded if necessary)
 pub fn absorb(r: usize, f: F, state: State, data: &[u8]) -> State {
-    assert!(data.len() % r == 0);
+    assert_eq!(data.len() % r, 0);
 
     let mut state = state;
     let mut data_index = 0;
