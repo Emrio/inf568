@@ -31,8 +31,7 @@ pub fn absorb(r: usize, f: F, state: State, data: &[u8]) -> State {
     let mut state = state;
     let mut data_index = 0;
     while data_index < data.len() {
-        let end = std::cmp::min(data_index + r, data.len());
-        let chunk = &data[data_index..end];
+        let chunk = &data[data_index..data_index + r];
         state = absorb_fixed(r, state, chunk);
         state = f(state);
         data_index += r;
