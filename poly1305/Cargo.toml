@@ -1,0 +1,8 @@
+[package]
+name = "poly1305"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hex = "0.4.3"
+num-bigint = "0.4.6"
