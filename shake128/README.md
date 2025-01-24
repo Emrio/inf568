@@ -1,9 +1,19 @@
 # shake128
 
+## Reference
+
+[FIPS 202](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf)
+
+## Compilation
+
+```sh
+cargo build --release
+```
+
 ## Usage
 
 ```sh
-cargo run -- 32 < input.txt
+./target/release/shake128 32 < input.txt
 ```
 
 ## Tests

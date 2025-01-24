@@ -1,5 +1,9 @@
 # chacha20/poly1305 AEAD
 
+## Reference
+
+[rfc8439](https://datatracker.ietf.org/doc/html/rfc8439)
+
 ## Compilation
 
 ```sh
