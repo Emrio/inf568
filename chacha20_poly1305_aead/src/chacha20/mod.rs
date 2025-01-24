@@ -1,5 +1,8 @@
 use std::{array, num::Wrapping};
 
+pub type Key = [u8; 32];
+pub type Nonce = [u8; 12];
+
 fn quarter_round(a: u32, b: u32, c: u32, d: u32) -> (u32, u32, u32, u32) {
     let (mut a, mut b, mut c, mut d) = (Wrapping(a), Wrapping(b), Wrapping(c), Wrapping(d));
     a += b;
@@ -21,7 +24,7 @@ fn quarter_round(a: u32, b: u32, c: u32, d: u32) -> (u32, u32, u32, u32) {
 struct State([u32; 16]);
 
 impl State {
-    fn from(key: [u8; 32], nonce: [u8; 12], counter: u32) -> Self {
+    fn from(key: Key, nonce: Nonce, counter: u32) -> Self {
         Self([
             0x61707865,
             0x3320646e,
@@ -86,15 +89,15 @@ impl std::ops::Add for State {
     }
 }
 
-fn chacha20_block(key: [u8; 32], nonce: [u8; 12], counter: u32) -> [u8; 64] {
+pub fn chacha20_block(key: Key, nonce: Nonce, counter: u32) -> [u8; 64] {
     let initial_state = State::from(key, nonce, counter);
     let mut state = initial_state.clone();
     state.run_rounds();
     (state + initial_state).to_buffer()
 }
 
-pub fn chacha20_encrypt(key: [u8; 32], nonce: [u8; 12], counter: u32, plaintext: &[u8]) -> Vec<u8> {
-    plaintext
+pub fn encrypt(key: Key, nonce: Nonce, counter: u32, input: &[u8]) -> Vec<u8> {
+    input
         .chunks(64)
         .enumerate()
         .map(|(j, block)| {

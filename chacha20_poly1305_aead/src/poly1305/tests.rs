@@ -1,3 +1,4 @@
+use super::*;
 use num_bigint::ToBigUint;
 
 #[test]
@@ -7,7 +8,7 @@ fn key_parsing() {
         0xa8, 0x01, 0x03, 0x80, 0x8a, 0xfb, 0x0d, 0xb2, 0xfd, 0x4a, 0xbf, 0xf6, 0xaf, 0x41, 0x49,
         0xf5, 0x1b,
     ];
-    let (r, s) = super::parse_key(key);
+    let (r, s) = parse_key(key);
     assert_eq!(
         r,
         0x806d5400e52447c036d555408bed685u128.to_biguint().unwrap()
@@ -27,7 +28,7 @@ fn short_text() {
     ];
     let message = b"Cryptographic Forum Research Group";
 
-    let result = super::poly1305_mac(key, message);
+    let result = mac(key, message);
 
     assert_eq!(
         result,

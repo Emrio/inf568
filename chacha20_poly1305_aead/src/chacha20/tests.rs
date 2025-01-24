@@ -1,13 +1,15 @@
+use super::*;
+
 #[test]
 fn test_quarter_round() {
     let (a, b, c, d) = (0x11111111u32, 0x01020304u32, 0x9b8d6f43u32, 0x01234567u32);
-    let result = super::quarter_round(a, b, c, d);
+    let result = quarter_round(a, b, c, d);
     assert_eq!(result, (0xea2a92f4, 0xcb1cf8ce, 0x4581472e, 0x5881c4bb));
 }
 
 #[test]
 fn test_quarter_round_state() {
-    let mut state = super::State([
+    let mut state = State([
         0x879531e0, 0xc5ecf37d, 0x516461b1, 0xc9a62f8a, 0x44c20ef3, 0x3390af7f, 0xd9fc690b,
         0x2a5f714c, 0x53372767, 0xb00a5631, 0x974c541a, 0x359e9963, 0x5c971061, 0x3d631689,
         0x2098d9d6, 0x91dbd320,
@@ -23,11 +25,11 @@ fn test_quarter_round_state() {
     );
 }
 
-const KEY0: [u8; 32] = [
+const KEY0: Key = [
     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
     0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
 ];
-const NONCE0: [u8; 12] = [
+const NONCE0: Nonce = [
     0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x4a, 0x00, 0x00, 0x00, 0x00,
 ];
 
@@ -38,7 +40,7 @@ const STATE_INITIAL: [u32; 16] = [
 
 #[test]
 fn test_init() {
-    let state = super::State::from(KEY0, NONCE0, 1);
+    let state = State::from(KEY0, NONCE0, 1);
     assert_eq!(state.0, STATE_INITIAL);
 }
 
@@ -49,15 +51,15 @@ const STATE_AFTER_ROUNDS: [u32; 16] = [
 
 #[test]
 fn test_run_rounds() {
-    let mut state = super::State::from(KEY0, NONCE0, 1);
+    let mut state = State::from(KEY0, NONCE0, 1);
     state.run_rounds();
     assert_eq!(state.0, STATE_AFTER_ROUNDS);
 }
 
 #[test]
 fn test_addition() {
-    let state0 = super::State(STATE_INITIAL);
-    let state1 = super::State(STATE_AFTER_ROUNDS);
+    let state0 = State(STATE_INITIAL);
+    let state1 = State(STATE_AFTER_ROUNDS);
     assert_eq!(
         (state0 + state1).0,
         [
@@ -70,7 +72,7 @@ fn test_addition() {
 
 #[test]
 fn test_chacha20_block() {
-    let result = super::chacha20_block(KEY0, NONCE0, 1);
+    let result = chacha20_block(KEY0, NONCE0, 1);
     assert_eq!(
         result,
         [
@@ -83,14 +85,14 @@ fn test_chacha20_block() {
     );
 }
 
-const NONCE1: [u8; 12] = [
+const NONCE1: Nonce = [
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4a, 0x00, 0x00, 0x00, 0x00,
 ];
 const PLAINTEXT: &[u8] = "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.".as_bytes();
 
 #[test]
 fn test_chacha20_encrypt() {
-    let output = super::chacha20_encrypt(KEY0, NONCE1, 1, PLAINTEXT);
+    let output = encrypt(KEY0, NONCE1, 1, PLAINTEXT);
     assert_eq!(
         output,
         [
@@ -109,7 +111,7 @@ fn test_chacha20_encrypt() {
 
 #[test]
 fn test_chacha20_decrypt() {
-    let encrypted = super::chacha20_encrypt(KEY0, NONCE1, 1, PLAINTEXT);
-    let decrypted = super::chacha20_encrypt(KEY0, NONCE1, 1, &encrypted);
+    let encrypted = encrypt(KEY0, NONCE1, 1, PLAINTEXT);
+    let decrypted = encrypt(KEY0, NONCE1, 1, &encrypted);
     assert_eq!(decrypted, PLAINTEXT);
 }

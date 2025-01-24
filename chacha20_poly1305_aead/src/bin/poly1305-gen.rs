@@ -7,8 +7,7 @@ fn main() {
         abort("Usage: poly1305-gen <key> <filename>");
     }
 
-    let key = args[1].as_bytes();
-    let key = hex::decode(key).unwrap();
+    let key = hex::decode(args[1].as_bytes()).unwrap();
     if key.len() != 32 {
         abort("Key must be 32 bytes long");
     }
@@ -21,8 +20,5 @@ fn main() {
 
     let tag = poly1305_mac(key, &file_content);
 
-    for byte in tag {
-        print!("{:02x}", byte);
-    }
-    println!();
+    println!("{}", hex::encode(tag));
 }
