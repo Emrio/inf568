@@ -1,5 +1,5 @@
 [package]
-name = "poly1305"
+name = "chacha20_poly1305_aead"
 version = "0.1.0"
 edition = "2021"
 
