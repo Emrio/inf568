@@ -1,8 +1,3 @@
-mod keccack;
-mod shake128;
-mod sponge;
-mod state;
-
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     if args.len() <= 1 {
@@ -19,6 +14,3 @@ fn main() {
     }
     println!();
 }
-
-#[cfg(test)]
-mod tests;

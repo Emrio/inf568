@@ -41,7 +41,6 @@ pub fn from_stdin(d: usize) -> Vec<u8> {
     sponge::squeeze(R, keccack::keccak_p, d, state)
 }
 
-#[allow(dead_code)]
 pub fn from(data: &[u8], d: usize) -> Vec<u8> {
     let sep = (data.len() / R) * R;
     let (begin, end) = data.split_at(sep);
