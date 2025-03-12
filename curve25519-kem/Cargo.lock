@@ -77,14 +77,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "chacha20_poly1305_aead"
-version = "0.1.0"
-dependencies = [
- "hex",
- "num-bigint",
-]
-
-[[package]]
 name = "clap"
 version = "4.5.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -121,12 +113,10 @@ checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
 name = "curve25519-kem"
 version = "0.1.0"
 dependencies = [
- "chacha20_poly1305_aead",
  "clap",
  "hex",
+ "num-bigint",
  "rand",
- "shake128",
- "x25519",
 ]
 
 [[package]]
@@ -251,10 +241,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "shake128"
-version = "0.1.0"
-
-[[package]]
 name = "strsim"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -372,15 +358,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3268f3d866458b787f390cf61f4bbb563b922d091359f9608842999eaee3943c"
 dependencies = [
  "bitflags",
-]
-
-[[package]]
-name = "x25519"
-version = "0.1.0"
-dependencies = [
- "clap",
- "hex",
- "num-bigint",
 ]
 
 [[package]]

@@ -1,8 +1,9 @@
-use chacha20_poly1305_aead::chacha20_encrypt;
 use rand::Rng;
-use x25519::{generate_public_key, generate_shared_secret};
 
-use crate::hash::hash;
+use crate::chacha20::encrypt as chacha20_encrypt;
+use crate::x25519::{generate_public_key, generate_shared_secret};
+
+use super::hash::hash;
 
 type PublicKey = [u8; 32];
 type SecretKey = [u8; 32];

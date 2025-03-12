@@ -1,7 +1,7 @@
 use rand::Rng;
 
-use crate::hash::hash;
-use crate::pke::{self, CIPHERTEXT_SIZE};
+use super::hash::hash;
+use super::pke::{self, CIPHERTEXT_SIZE};
 
 const LS: usize = 256 / 8;
 const D: usize = 32;
