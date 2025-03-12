@@ -1,0 +1,12 @@
+[package]
+name = "curve25519-kem"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chacha20_poly1305_aead = { version = "0.1.0", path = "../chacha20_poly1305_aead" }
+clap = { version = "4.5.32", features = ["cargo"] }
+hex = "0.4.3"
+rand = "0.9.0"
+shake128 = { version = "0.1.0", path = "../shake128" }
+x25519 = { version = "0.1.0", path = "../x25519" }
