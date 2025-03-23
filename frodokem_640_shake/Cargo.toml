@@ -1,0 +1,8 @@
+[package]
+name = "frodokem_640_shake"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.32", features = ["cargo"] }
+rand = "0.9.0"
